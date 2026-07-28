@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>skribbl</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="nickname-popup" class="popup-overlay hidden">
+  <div class="popup-box">
+    <h2 class="popup-title">what's your name?</h2>
+    <div class="form-group">
+      <input type="text" id="popup-nickname" placeholder="enter nickname" maxlength="16" autofocus>
+    </div>
+    <button id="popup-go" class="btn btn-cyan">let's go</button>
+  </div>
+</div>
+
+<div id="app">
+  <div id="lobby">
+    <h1 class="logo">SKRIBBL</h1>
+    <p class="subtitle">draw & guess</p>
+    <div class="lobby-box">
+      <div class="form-group">
+        <label>nickname</label>
+        <div class="nickname-display">
+          <span id="nickname-show"></span>
+          <button id="edit-name" class="btn btn-small btn-outline">edit</button>
+        </div>
+        <input type="text" id="nickname" class="hidden">
+      </div>
+      <div class="btn-row">
+        <button id="create-room" class="btn btn-cyan">create room</button>
+      </div>
+      <div class="divider"><span>or</span></div>
+      <div class="form-group">
+        <label for="room-code">room code</label>
+        <input type="text" id="room-code" placeholder="ABCD" maxlength="4" style="text-transform:uppercase">
+      </div>
+      <div class="btn-row">
+        <button id="join-room" class="btn btn-magenta">join room</button>
+      </div>
+    </div>
+    <div id="lobby-error" class="error hidden"></div>
+  </div>
+
+  <div id="waiting" class="hidden">
+    <div class="waiting-header">
+      <span class="room-label">room</span>
+      <span id="waiting-code" class="room-code"></span>
+    </div>
+    <div class="waiting-players">
+      <h3>players</h3>
+      <ul id="waiting-player-list"></ul>
+      <p class="player-count" id="waiting-count">1 player</p>
+    </div>
+    <button id="start-game-btn" class="btn btn-yellow hidden">start game</button>
+    <button id="leave-waiting" class="btn btn-outline">leave</button>
+  </div>
+
+  <div id="game" class="hidden">
+    <div class="top-bar">
+      <div class="top-item"><span class="label">room</span><span id="game-room-code">--</span></div>
+      <div class="top-item"><span class="label">round</span><span id="round-info">0/0</span></div>
+      <div class="top-item hint-item">
+        <span id="word-hint" class="word-hint"></span>
+      </div>
+      <div class="top-item"><span class="label">timer</span><span id="timer-display">--</span></div>
+      <div class="top-item"><span class="label">drawing</span><span id="drawer-name">--</span></div>
+    </div>
+    <div class="game-body">
+      <div class="sidebar sidebar-left">
+        <div id="scores-list"></div>
+        <div id="word-area">
+          <div id="word-pick" class="hidden">
+            <p class="pick-label">pick a word</p>
+            <div id="word-options"></div>
+          </div>
+          <div id="word-reveal" class="hidden">
+            <p class="your-word-label">your word</p>
+            <p id="your-word" class="your-word"></p>
+          </div>
+        </div>
+      </div>
+      <div class="canvas-container">
+        <canvas id="draw-canvas"></canvas>
+        <div id="toolbar">
+          <div id="colors">
+            <button class="clr active" data-color="#1A1A1A" style="background:#1A1A1A"></button>
+            <button class="clr" data-color="#00B5E2" style="background:#00B5E2"></button>
+            <button class="clr" data-color="#E2007A" style="background:#E2007A"></button>
+            <button class="clr" data-color="#FFD500" style="background:#FFD500"></button>
+            <button class="clr" data-color="#FFFFFF" style="background:#FFFFFF;border-color:#ccc"></button>
+          </div>
+          <div id="sizes">
+            <button class="sz" data-size="3">●</button>
+            <button class="sz active" data-size="6">●</button>
+            <button class="sz" data-size="12">●</button>
+            <button class="sz" data-size="20">●</button>
+          </div>
+          <button id="clear-canvas-btn" class="btn btn-small btn-outline">clear</button>
+        </div>
+      </div>
+      <div class="sidebar sidebar-right">
+        <div id="chat-messages"></div>
+        <div id="chat-input-area">
+          <input type="text" id="chat-input" placeholder="type your guess..." maxlength="50" autocomplete="off">
+          <button id="chat-send">send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="round-overlay" class="hidden">
+  <div id="round-result">
+    <p id="round-word-reveal"></p>
+    <p id="round-drawer-reveal"></p>
+  </div>
+</div>
+
+<div id="game-over-overlay" class="hidden">
+  <div id="game-over-box">
+    <h2>game over</h2>
+    <ol id="final-scores"></ol>
+    <button id="back-to-lobby" class="btn btn-cyan">back to lobby</button>
+  </div>
+</div>
+
+<script src="/js/canvas.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
