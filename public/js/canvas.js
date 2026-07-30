@@ -18,7 +18,8 @@ class Canvas {
   }
 
   resize() {
-    const rect = this.canvas.parentElement.getBoundingClientRect();
+    const wrapper = this.canvas.parentElement;
+    const rect = wrapper.getBoundingClientRect();
     this.canvas.width = rect.width;
     this.canvas.height = rect.height;
     this.redraw();
