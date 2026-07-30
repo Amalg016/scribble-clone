@@ -282,7 +282,7 @@ function onYourWord(p) {
   $('your-word').textContent = p.word;
 
   canvasInstance.enable(
-    (prevX, prevY, x, y, color, size) => send('draw', { prevX, prevY, x, y, color, size }),
+    (prevX, prevY, x, y, color, size, type) => send('draw', { type, prevX, prevY, x, y, color, size }),
     () => send('clear_canvas', {})
   );
 }

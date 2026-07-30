@@ -441,6 +441,31 @@ input:focus {
   box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--black);
 }
 
+#tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tool {
+  border: 2px solid var(--black);
+  background: var(--white);
+  cursor: pointer;
+  padding: 2px;
+  font-size: 16px;
+  line-height: 1;
+  width: 32px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tool.active {
+  background: var(--black);
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--black);
+}
+
 #sizes {
   display: flex;
   align-items: center;

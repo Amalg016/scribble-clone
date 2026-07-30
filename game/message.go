@@ -8,6 +8,7 @@ type Message struct {
 
 // DrawAction represents a drawing action
 type DrawAction struct {
+	Type  string  `json:"type,omitempty"`
 	PrevX float64 `json:"prevX"`
 	PrevY float64 `json:"prevY"`
 	X     float64 `json:"x"`
