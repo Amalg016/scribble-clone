@@ -44,7 +44,7 @@ func LoadWords(filepath string) {
 	allWords = append(allWords, words.Hard...)
 }
 
-func GetRandomWords(n int) []string {
+func GetRandomWords(n int, exclude map[string]bool) []string {
 	wordsMu.RLock()
 	defer wordsMu.RUnlock()
 
@@ -52,14 +52,27 @@ func GetRandomWords(n int) []string {
 		return []string{"word"}
 	}
 
-	if n > len(allWords) {
-		n = len(allWords)
+	// Build a pool of available (non-excluded) words
+	available := make([]string, 0, len(allWords))
+	for _, w := range allWords {
+		if !exclude[w] {
+			available = append(available, w)
+		}
 	}
 
-	perm := rng.Perm(len(allWords))
+	// If all words have been used, reset to the full pool
+	if len(available) == 0 {
+		available = allWords
+	}
+
+	if n > len(available) {
+		n = len(available)
+	}
+
+	perm := rng.Perm(len(available))
 	result := make([]string, n)
 	for i := 0; i < n; i++ {
-		result[i] = allWords[perm[i]]
+		result[i] = available[perm[i]]
 	}
 	return result
 }

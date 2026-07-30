@@ -28,6 +28,7 @@ type Room struct {
 	WordOptions     []string
 	RoundStartTime  time.Time
 	HintTimerCancel context.CancelFunc
+	UsedWords       map[string]bool
 }
 
 func NewRoom(code string, host *Player) *Room {
@@ -39,6 +40,7 @@ func NewRoom(code string, host *Player) *Room {
 		MaxRounds:       3,
 		DrawHistory:     make([]DrawAction, 0),
 		CorrectGuessers: make(map[string]bool),
+		UsedWords:       make(map[string]bool),
 	}
 }
 
@@ -327,7 +329,7 @@ func (r *Room) StartRound() {
 	})
 	r.broadcast(Message{Type: "clear_canvas", Payload: map[string]interface{}{}})
 
-	r.WordOptions = GetRandomWords(3)
+	r.WordOptions = GetRandomWords(3, r.UsedWords)
 	if r.CurrentDrawer != nil {
 		r.CurrentDrawer.SendJSON(Message{
 			Type: "word_options",
@@ -353,6 +355,7 @@ func (r *Room) StartRound() {
 func (r *Room) selectWordLocked(word string) {
 	r.State = "drawing"
 	r.CurrentWord = word
+	r.UsedWords[word] = true
 	r.RoundStartTime = time.Now()
 
 	if r.CurrentDrawer != nil {
@@ -539,6 +542,7 @@ func (r *Room) endGameLocked() {
 	r.CurrentDrawer = nil
 	r.CurrentWord = ""
 	r.DrawHistory = make([]DrawAction, 0)
+	r.UsedWords = make(map[string]bool)
 }
 
 func (r *Room) startTimer(seconds int, onExpire func()) {
