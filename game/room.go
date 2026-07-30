@@ -376,16 +376,23 @@ func (r *Room) selectWordLocked(word string) {
 	r.startHintTimer()
 }
 
-func (r *Room) sendWordHintLocked() {
-	hint := ""
-	for _, char := range r.CurrentWord {
+func formatWordHint(word string, revealed []bool) string {
+	var sb strings.Builder
+	for i, char := range word {
 		if char == ' ' {
-			hint += "  "
+			sb.WriteString("   ")
+		} else if revealed != nil && revealed[i] {
+			sb.WriteRune(char)
+			sb.WriteString(" ")
 		} else {
-			hint += "_ "
+			sb.WriteString("_ ")
 		}
 	}
-	hint = strings.TrimSpace(hint)
+	return strings.TrimSpace(sb.String())
+}
+
+func (r *Room) sendWordHintLocked() {
+	hint := formatWordHint(r.CurrentWord, nil)
 
 	msg := Message{
 		Type: "word_hint",
@@ -443,15 +450,7 @@ func (r *Room) startHintTimer() {
 					idx := unrevealed[rand.Intn(len(unrevealed))]
 					revealed[idx] = true
 
-					hint := ""
-					for i, char := range r.CurrentWord {
-						if revealed[i] {
-							hint += string(char) + " "
-						} else {
-							hint += "_ "
-						}
-					}
-					hint = strings.TrimSpace(hint)
+					hint := formatWordHint(r.CurrentWord, revealed)
 
 					msg := Message{
 						Type: "word_hint",

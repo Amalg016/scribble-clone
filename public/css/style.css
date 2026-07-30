@@ -290,8 +290,9 @@ input:focus {
 
 .word-hint {
   font-size: 24px;
-  letter-spacing: 8px;
+  letter-spacing: 6px;
   font-weight: bold;
+  white-space: pre-wrap;
 }
 
 .game-body {
