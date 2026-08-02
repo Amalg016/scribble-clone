@@ -86,19 +86,22 @@ func (h *Hub) HandleInitialMessage(p *Player, msg Message, raw []byte) {
 			Payload CreateRoomPayload `json:"payload"`
 		}
 		json.Unmarshal(raw, &wrapper)
-		p.Name = wrapper.Payload.Name
+		p.Name = strings.TrimSpace(wrapper.Payload.Name)
 		if p.Name == "" {
 			p.Name = "Player"
 		}
 		room := h.CreateRoom(p)
-		room.AddPlayer(p)
+		if err := room.AddPlayer(p); err != nil {
+			p.SendJSON(Message{Type: "error", Payload: ErrorPayload{Message: err.Error()}})
+			return
+		}
 
 	case "join_room":
 		var wrapper struct {
 			Payload JoinRoomPayload `json:"payload"`
 		}
 		json.Unmarshal(raw, &wrapper)
-		p.Name = wrapper.Payload.Name
+		p.Name = strings.TrimSpace(wrapper.Payload.Name)
 		if p.Name == "" {
 			p.Name = "Player"
 		}
@@ -107,6 +110,9 @@ func (h *Hub) HandleInitialMessage(p *Player, msg Message, raw []byte) {
 			p.SendJSON(Message{Type: "error", Payload: ErrorPayload{Message: "Room not found"}})
 			return
 		}
-		room.AddPlayer(p)
+		if err := room.AddPlayer(p); err != nil {
+			p.SendJSON(Message{Type: "error", Payload: ErrorPayload{Message: err.Error()}})
+			return
+		}
 	}
 }

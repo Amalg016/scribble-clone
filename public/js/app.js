@@ -390,12 +390,10 @@ $('back-to-lobby').addEventListener('click', () => {
 });
 
 function onError(p) {
-  if (p.message === 'Room not found') {
-    clearSession();
-    showError('room not found');
-    if (socket) { socket.close(); socket = null; }
-    showScreen('lobby');
-  }
+  clearSession();
+  showError((p.message || 'an error occurred').toLowerCase());
+  if (socket) { socket.close(); socket = null; }
+  showScreen('lobby');
 }
 
 /* ---- Helpers ---- */

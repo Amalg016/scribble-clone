@@ -3,6 +3,7 @@ package game
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"math/rand"
 	"strings"
 	"sync"
@@ -57,9 +58,16 @@ func (r *Room) getPlayerInfoList() []PlayerInfo {
 	return list
 }
 
-func (r *Room) AddPlayer(p *Player) {
+func (r *Room) AddPlayer(p *Player) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
+
+	trimmedName := strings.TrimSpace(p.Name)
+	for _, existingPlayer := range r.Players {
+		if strings.EqualFold(strings.TrimSpace(existingPlayer.Name), trimmedName) {
+			return errors.New("Nickname is already taken in this room")
+		}
+	}
 
 	p.Room = r
 	r.Players[p.ID] = p
@@ -115,6 +123,7 @@ func (r *Room) AddPlayer(p *Player) {
 			},
 		})
 	}
+	return nil
 }
 
 func (r *Room) RemovePlayer(p *Player) {
