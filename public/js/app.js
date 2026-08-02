@@ -371,9 +371,9 @@ function onGameOver(p) {
   list.innerHTML = '';
 
   const sorted = Object.entries(p.scores || {}).sort((a, b) => b[1] - a[1]);
-  sorted.forEach(([id, score]) => {
+  sorted.forEach(([id, score], idx) => {
     const li = document.createElement('li');
-    li.innerHTML = esc(getPlayerName(id) || id) + ' <span class="score-val">' + score + ' pts</span>';
+    li.innerHTML = '<span class="final-rank">#' + (idx + 1) + '</span> ' + esc(getPlayerName(id) || id) + ' <span class="score-val">' + score + '</span>';
     list.appendChild(li);
   });
 
@@ -401,10 +401,39 @@ function onError(p) {
 function renderScores() {
   const container = $('scores-list');
   container.innerHTML = '';
-  players.forEach(p => {
+  
+  // Sort players by score descending; fallback to name ascending
+  const sortedPlayers = [...players].sort((a, b) => {
+    const scoreA = a.score || 0;
+    const scoreB = b.score || 0;
+    if (scoreB !== scoreA) {
+      return scoreB - scoreA;
+    }
+    return (a.name || '').localeCompare(b.name || '');
+  });
+
+  sortedPlayers.forEach((p, index) => {
+    const rank = index + 1;
+    const isMe = p.id === playerId;
+    const isDrawing = p.id === drawerId;
+
+    let classes = 'score-item';
+    if (isDrawing) classes += ' drawer';
+    if (isMe) classes += ' is-me';
+
+    let rankBadge = '<span class="rank-num rank-' + rank + '">#' + rank + '</span>';
+
+    const nameText = esc(p.name) + (isMe ? ' <span class="you-tag">(you)</span>' : '') + (isDrawing ? ' <span class="drawer-icon">✏️</span>' : '');
+
     const div = document.createElement('div');
-    div.className = 'score-item' + (p.id === drawerId ? ' drawer' : '');
-    div.innerHTML = '<span>' + esc(p.name) + '</span><span class="score-pts">' + p.score + '</span>';
+    div.className = classes;
+    div.innerHTML = 
+      '<div class="score-player-info">' +
+        rankBadge +
+        ' ' +
+        '<span class="player-name">' + nameText + '</span>' +
+      '</div>' +
+      '<span class="score-pts">' + (p.score || 0) + '</span>';
     container.appendChild(div);
   });
 }

@@ -315,26 +315,98 @@ input:focus {
   border-left: 2px solid var(--black);
 }
 
-/* Scores list */
+/* Scores list & Ranking */
 #scores-list {
-  padding: 12px;
+  padding: 10px;
   border-bottom: 2px solid var(--black);
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 240px;
+  overflow-y: auto;
 }
 
 .score-item {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding: 4px 0;
+  padding: 6px 8px;
   font-size: 13px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.25s ease;
+}
+
+.score-item.is-me {
+  background: rgba(0, 181, 226, 0.12);
+  border-color: rgba(0, 181, 226, 0.4);
 }
 
 .score-item.drawer {
   font-weight: bold;
 }
 
+.score-player-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.player-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 4px;
+}
+
+.you-tag {
+  font-size: 11px;
+  color: var(--cyan);
+  font-weight: bold;
+}
+
+.drawer-icon {
+  font-size: 12px;
+}
+
+.rank-num {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--fg);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+.rank-num.rank-1 {
+  background: #FFD700;
+  color: #000;
+}
+
+.rank-num.rank-2 {
+  background: #C0C0C0;
+  color: #000;
+}
+
+.rank-num.rank-3 {
+  background: #CD7F32;
+  color: #FFF;
+}
+
 .score-item .score-pts {
-  color: var(--gray);
+  color: var(--cyan);
+  font-weight: bold;
+  font-size: 12px;
+  margin-left: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* Word area */
@@ -622,16 +694,26 @@ input:focus {
 }
 
 #final-scores {
-  list-style: decimal;
+  list-style: none;
   text-align: left;
-  padding-left: 24px;
+  padding-left: 0;
   margin-bottom: 24px;
 }
 
 #final-scores li {
-  padding: 6px 0;
+  padding: 8px 12px;
   font-size: 16px;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.15);
+}
+
+#final-scores .final-rank {
+  color: var(--cyan);
+  margin-right: 14px;
+  font-weight: 700;
 }
 
 #final-scores .score-val {
