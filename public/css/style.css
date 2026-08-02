@@ -261,8 +261,19 @@ input:focus {
   gap: 32px;
   padding: 10px 20px;
   background: var(--white);
-  border-bottom: 2px solid var(--black);
+  border-bottom: 3px solid var(--black);
   flex-wrap: wrap;
+  position: relative;
+}
+
+.top-bar::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cyan) 25%, var(--magenta) 25%, var(--magenta) 50%, var(--yellow) 50%, var(--yellow) 75%, var(--black) 75%);
 }
 
 .top-item {
@@ -308,11 +319,34 @@ input:focus {
   border-right: 2px solid var(--black);
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.sidebar-left::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--cyan) 33%, var(--magenta) 33%, var(--magenta) 66%, var(--yellow) 66%);
+  z-index: 1;
 }
 
 .sidebar-right {
   border-right: none;
   border-left: 2px solid var(--black);
+}
+
+.sidebar-right::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--yellow) 33%, var(--magenta) 33%, var(--magenta) 66%, var(--cyan) 66%);
+  z-index: 1;
 }
 
 /* Scores list & Ranking */
@@ -487,31 +521,52 @@ input:focus {
 #toolbar {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   padding: 6px 12px;
   border-top: 2px solid var(--black);
   background: var(--white);
   flex-shrink: 0;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+#toolbar::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cyan) 25%, var(--magenta) 25%, var(--magenta) 50%, var(--yellow) 50%, var(--yellow) 75%, var(--black) 75%);
 }
 
 #colors {
-  display: flex;
-  gap: 4px;
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 2px;
 }
 
 .clr {
-  width: 28px;
-  height: 28px;
-  border: 2px solid var(--black);
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(0, 0, 0, 0.25);
   cursor: pointer;
-  border-radius: 0;
+  border-radius: 2px;
   padding: 0;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.clr:hover {
+  transform: scale(1.2);
+  z-index: 2;
+  border-color: var(--black);
 }
 
 .clr.active {
   border-color: var(--black);
-  box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--black);
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 3px var(--black);
+  transform: scale(1.15);
+  z-index: 2;
 }
 
 #tools {
